@@ -1,17 +1,13 @@
 package com.github.rchugunov
 
-import org.gradle.api.Plugin
-import org.gradle.api.Project
-
-
 public class AndroidAnalyticsExtension {
-    def String googleProjectId;
+    def File googleServiceAccountJson;
 
-    String getGoogleProjectId() {
-        return googleProjectId
+    File getGoogleServiceAccountJson() {
+        return googleServiceAccountJson
     }
 
-    void setGoogleProjectId(String googleProjectId) {
-        this.googleProjectId = googleProjectId
+    void setGoogleServiceAccountJson(File googleServiceAccountJson) {
+        this.googleServiceAccountJson = googleServiceAccountJson
     }
 }
