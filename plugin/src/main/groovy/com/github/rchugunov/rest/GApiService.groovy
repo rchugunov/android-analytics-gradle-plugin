@@ -1,9 +1,7 @@
 package com.github.rchugunov.rest
 
 import retrofit2.Call
-import retrofit2.http.Field
-import retrofit2.http.FormUrlEncoded
-import retrofit2.http.POST
+import retrofit2.http.*
 
 public interface GApiService {
 
@@ -11,4 +9,10 @@ public interface GApiService {
     @POST("oauth2/v4/token")
     Call<GApiOAuthResponse> getTokenData(@Field("grant_type") String grantType,
                                          @Field("assertion") String jwt);
+
+    @GET("androidpublisher/v2/applications/{package_name}/reviews")
+    Call<GApiReviewsListResponse> getReviews(
+            @Path("package_name") packageName, @Header("Authorization") token);
+
+
 }

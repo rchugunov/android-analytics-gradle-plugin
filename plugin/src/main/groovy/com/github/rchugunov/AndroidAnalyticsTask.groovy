@@ -40,21 +40,24 @@ public class AndroidAnalyticsTask extends DefaultTask {
                 .getService()
                 .getTokenData("urn:ietf:params:oauth:grant-type:jwt-bearer", assertion)
 
+        String authToken = null;
+
         try {
             Response<GApiOAuthResponse> response = responseCall.execute()
-            logger.quiet("Auth status " + response.code())
-            logger.quiet(responseCall.request().toString())
-            logger.quiet(responseCall.request().body().toString())
-//            logger.quiet(response.message())
-//            logger.quiet(response.errorBody().string())
-
-            if (response.body() != null) {
-                logger.quiet("Auth status " + response.body().toString())
-            }
+            logger.info("Auth status " + response.code())
+            logger.debug("Auth token " + response.body().getAccessToken())
+            authToken = response.body().getAccessToken();
         } catch (Exception e) {
             logger.quiet(e.toString(), e)
         }
 
+        if (authToken == null || authToken.length() == 0) {
+            logger.quiet("Could not authorize in Google API (oauth2)")
+            return
+        }
+
+        ReviewsHelper reviewsHelper = new ReviewsHelper(project, authToken)
+        reviewsHelper.loadReviews()
     }
 
     private Credential authorizeWithServiceAccount(String serviceAccountEmail, File json)
