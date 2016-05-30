@@ -8,7 +8,6 @@ import org.gradle.api.tasks.TaskExecutionException
 import retrofit2.Call
 import retrofit2.Response
 
-
 class ReviewsHelper {
     String authToken;
     Project project
@@ -20,9 +19,21 @@ class ReviewsHelper {
 
     def void loadReviews() {
         try {
+
+            String appId = project.androidAnalytics.applicationId
+            if (appId == null || appId.length() == 0) {
+                appId = project.android.defaultConfig.applicationId
+            }
+
+            if (appId == null || appId.length() == 0) {
+                throw new TaskExecutionException(project.getTasks().getByPath(AndroidAnalyticsPlugin.ANALYTICS_TASK_NAME),
+                        new StopActionException("Either specify androidAnalytics.applicationId or " +
+                                "android.defaultConfig.applicationId"))
+            }
+
             GApiRestClient restClient = GApiRestClient.getInstance()
             Call<GApiReviewsListResponse> responseCall = restClient.getService()
-                    .getReviews(project.android.flavorapplicationId, "Bearer " + authToken)
+                    .getReviews(appId, "Bearer " + authToken)
             Response<GApiReviewsListResponse> response = responseCall.execute()
 
             if (response.body() != null) {
@@ -35,7 +46,7 @@ class ReviewsHelper {
                     project.logger.quiet(response.errorBody().string())
                 }
                 throw new TaskExecutionException(project.getTasks().getByPath(AndroidAnalyticsPlugin.ANALYTICS_TASK_NAME),
-                        new StopActionException())
+                        new StopActionException("Error when retrieving reviews from Google Play"))
             }
         } catch (Exception e) {
             throw new TaskExecutionException(project.getTasks().getByPath(AndroidAnalyticsPlugin.ANALYTICS_TASK_NAME), e)
