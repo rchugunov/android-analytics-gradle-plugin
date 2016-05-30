@@ -4,23 +4,26 @@ import com.github.rchugunov.auth.GApiServiceAccountPrivateData
 import com.github.rchugunov.auth.JWTSigningHelper
 import com.github.rchugunov.rest.GApiOAuthResponse
 import com.github.rchugunov.rest.GApiRestClient
-import com.google.api.client.auth.oauth2.Credential
-import com.google.api.client.googleapis.auth.oauth2.GoogleCredential
-import com.google.api.services.androidpublisher.AndroidPublisher
-import com.google.api.services.androidpublisher.AndroidPublisherScopes
 import com.google.gson.Gson
 import com.google.gson.stream.JsonReader
 import org.gradle.api.DefaultTask
+import org.gradle.api.tasks.StopActionException
 import org.gradle.api.tasks.TaskAction
+import org.gradle.api.tasks.TaskExecutionException
 import retrofit2.Call
 import retrofit2.Response
-
-import java.security.GeneralSecurityException
 
 public class AndroidAnalyticsTask extends DefaultTask {
 
     @TaskAction
     public void run() {
+
+        if (!project.getPlugins().hasPlugin("com.android.application")) {
+            throw new TaskExecutionException(this,
+                    new StopActionException("Android analytics work only with Android projects. \r\n" +
+                            "Add 'com.android.application' plugin and set up at least one Android module"))
+        }
+
         File json = project.androidAnalytics.googleServiceAccountJson
 
         GApiServiceAccountPrivateData privateData =
@@ -33,8 +36,6 @@ public class AndroidAnalyticsTask extends DefaultTask {
                 })
 
         String assertion = helper.getSignatureBase64()
-        logger.quiet(helper.getClaim().toString())
-        logger.quiet(assertion)
         GApiRestClient client = GApiRestClient.getInstance()
         Call<GApiOAuthResponse> responseCall = client
                 .getService()
@@ -52,23 +53,10 @@ public class AndroidAnalyticsTask extends DefaultTask {
         }
 
         if (authToken == null || authToken.length() == 0) {
-            logger.quiet("Could not authorize in Google API (oauth2)")
-            return
+            throw new TaskExecutionException(this, new StopActionException("Could not authorize in Google API (oauth2)"))
         }
 
         ReviewsHelper reviewsHelper = new ReviewsHelper(project, authToken)
         reviewsHelper.loadReviews()
-    }
-
-    private Credential authorizeWithServiceAccount(String serviceAccountEmail, File json)
-            throws GeneralSecurityException, IOException {
-
-        project.logger.info(String.format("Authorizing using Service Account: %s", serviceAccountEmail));
-
-        GoogleCredential credential = GoogleCredential.fromStream(new FileInputStream(json))
-                .createScoped(Collections.singleton(AndroidPublisherScopes.ANDROIDPUBLISHER));
-        AndroidPublisher androidPublisher = new AndroidPublisher.Builder(null, null, null).build()
-        androidPublisher.edits();
-        return credential;
     }
 }
