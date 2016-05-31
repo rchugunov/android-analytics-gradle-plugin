@@ -17,7 +17,7 @@ class ReviewsHelper {
         this.project = project
     }
 
-    def void loadReviews() {
+    def GApiReviewsListResponse loadReviews() {
         try {
 
             String appId = project.androidAnalytics.applicationId
@@ -37,7 +37,7 @@ class ReviewsHelper {
             Response<GApiReviewsListResponse> response = responseCall.execute()
 
             if (response.body() != null) {
-                project.logger.quiet(response.body().toString())
+                return response.body()
             } else {
                 project.logger.quiet(response.message())
                 project.logger.quiet("Request " + responseCall.request().toString())

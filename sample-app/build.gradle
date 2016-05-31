@@ -57,7 +57,12 @@ dependencies {
 }
 
 androidAnalytics {
-//    applicationId "com.hiploaded.christmasbeard"
+    applicationId = {
+        Properties properties = new Properties()
+        properties.load(project.rootProject.file('local.properties').newDataInputStream())
+        properties.getProperty('applicationId')
+    }.call()
+
     googleServiceAccountJson file({
         Properties properties = new Properties()
         properties.load(project.rootProject.file('local.properties').newDataInputStream())

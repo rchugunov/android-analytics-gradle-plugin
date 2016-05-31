@@ -4,6 +4,7 @@ import com.github.rchugunov.auth.GApiServiceAccountPrivateData
 import com.github.rchugunov.auth.JWTSigningHelper
 import com.github.rchugunov.rest.GApiOAuthResponse
 import com.github.rchugunov.rest.GApiRestClient
+import com.github.rchugunov.rest.GApiReviewsListResponse
 import com.google.gson.Gson
 import com.google.gson.stream.JsonReader
 import org.gradle.api.DefaultTask
@@ -14,6 +15,8 @@ import retrofit2.Call
 import retrofit2.Response
 
 public class AndroidAnalyticsTask extends DefaultTask {
+
+    Gson gson = new Gson()
 
     @TaskAction
     public void run() {
@@ -27,7 +30,7 @@ public class AndroidAnalyticsTask extends DefaultTask {
         File json = project.androidAnalytics.googleServiceAccountJson
 
         GApiServiceAccountPrivateData privateData =
-                new Gson().fromJson(new JsonReader(new FileReader(json)),
+                gson.fromJson(new JsonReader(new FileReader(json)),
                         GApiServiceAccountPrivateData.class)
 
         JWTSigningHelper helper = new JWTSigningHelper(privateData.getClientEmail(),
@@ -57,6 +60,21 @@ public class AndroidAnalyticsTask extends DefaultTask {
         }
 
         ReviewsHelper reviewsHelper = new ReviewsHelper(project, authToken)
-        reviewsHelper.loadReviews()
+        GApiReviewsListResponse response = reviewsHelper.loadReviews()
+
+        if (response != null) {
+            String reviews = gson.toJson(response)
+
+            if (reviews != null && reviews.length() > 0) {
+                File buildReport = new File(project.buildDir, "android.analytics/reviews.json")
+                if (!buildReport.exists()) {
+                    buildReport.getParentFile().mkdirs()
+                    buildReport.createNewFile()
+                }
+                FileWriter fileWriter = new FileWriter(buildReport)
+                fileWriter.write(reviews)
+                fileWriter.close()
+            }
+        }
     }
 }
