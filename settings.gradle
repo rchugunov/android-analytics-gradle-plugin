@@ -1,1 +1,1 @@
-include ':sample-app', ':plugin'
+include ':sample-app', ':plugin', ':andlytics-sonarqube'
