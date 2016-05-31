@@ -4,10 +4,14 @@ buildscript {
     repositories {
         jcenter()
         mavenLocal()
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:2.2.0-alpha2'
         classpath 'com.github.rchugunov.android-analytics:plugin:0.1.0'
+        classpath "org.sonarqube.gradle:gradle-sonarqube-plugin:1.1"
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
@@ -20,6 +24,7 @@ repositories {
 
 apply plugin: 'com.android.application'
 apply plugin: 'android-analytics'
+apply plugin: "org.sonarqube"
 
 android {
     compileSdkVersion 23
@@ -52,9 +57,26 @@ dependencies {
 }
 
 androidAnalytics {
+//    applicationId "com.hiploaded.christmasbeard"
     googleServiceAccountJson file({
         Properties properties = new Properties()
         properties.load(project.rootProject.file('local.properties').newDataInputStream())
         properties.getProperty('google-play-service-account-json')
     })
+}
+
+sonarqube {
+    properties {
+        property "sonar.projectName", "Android Analytics Sample"
+        property "sonar.projectKey", "com.github.rchugunov.andlyticsgradleplugin"
+        property "sonar.projectVersion", project
+                .extensions["android"]
+                .properties["defaultConfig"]
+                .properties["versionName"]
+        property "sonar.sources", "./src/main/java/"
+        property "sonar.java.binaries", "./build/intermediates/classes/debug"
+//        property "sonar.junit.reportsPath", "./build/test-results/release"
+//        property "sonar.android.lint.report", "./build/outputs/lint-results.xml"
+        property "sonar.verbose", "false"
+    }
 }
