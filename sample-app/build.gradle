@@ -1,5 +1,3 @@
-// Top-level build file where you can add configuration options common to all sub-projects/modules.
-
 buildscript {
     repositories {
         jcenter()
@@ -10,12 +8,13 @@ buildscript {
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:2.2.0-alpha2'
-        classpath 'com.github.rchugunov.android-analytics:plugin:0.1.0'
         classpath "org.sonarqube.gradle:gradle-sonarqube-plugin:1.1"
-
-        // NOTE: Do not place your application dependencies here; they belong
-        // in the individual module build.gradle files
+        classpath "com.gradle.publish:plugin-publish-plugin:0.9.4"
     }
+}
+
+plugins {
+    id "com.github.rchugunov.android-analytics" version "0.1.0"
 }
 
 repositories {
@@ -23,7 +22,6 @@ repositories {
 }
 
 apply plugin: 'com.android.application'
-apply plugin: 'android-analytics'
 apply plugin: "org.sonarqube"
 
 android {

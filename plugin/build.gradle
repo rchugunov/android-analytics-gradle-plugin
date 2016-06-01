@@ -3,9 +3,10 @@ plugins {
 //    id "com.github.hierynomus.license" version "0.11.0"
 //    id "net.researchgate.release" version "2.3.1"
 //    id "com.jfrog.artifactory" version "4.0.0"
+    id "com.jfrog.bintray" version "1.6"
 }
 
-group = 'com.github.rchugunov.android-analytics'
+group = 'com.github.rchugunov'
 description = 'Gradle plugin for retrieving/handling application statistics'
 version '0.1.0'
 
@@ -17,6 +18,7 @@ repositories {
 apply plugin: 'java-gradle-plugin'
 apply plugin: 'groovy'
 apply plugin: 'maven'
+apply plugin: 'maven-publish'
 
 dependencies {
     compile 'commons-logging:commons-logging:1.1.1'
@@ -25,4 +27,43 @@ dependencies {
     compile 'com.squareup.retrofit2:retrofit:2.0.2'
     compile 'com.squareup.retrofit2:converter-gson:2.0.2'
     compile 'com.android.tools.build:gradle:2.2.0-alpha2'
+}
+
+bintray {
+    user = "${BINTRAY_USER}"
+    key = "${BINTRAY_KEY}"
+    pkg {
+        repo = "maven"
+        name = "com.github.rchugunov"
+        licenses = ['Apache-2.0']
+        vcsUrl = 'https://github.com/rchugunov/android-analytics-gradle-plugin'
+    }
+    publications = ['AndroidAnalytics']
+}
+
+publishing {
+    publications {
+        AndroidAnalytics(MavenPublication) {
+            artifact("$buildDir/libs/${archivesBaseName}-${version}.jar")
+            artifactId archivesBaseName
+            groupId group
+            version version
+        }
+    }
+}
+
+// The configuration example below shows the minimum required properties
+// configured to publish your plugin to the plugin portal
+pluginBundle {
+    website = 'http://www.gradle.org/'
+    vcsUrl = 'https://github.com/gradle/gradle'
+    description = 'Gradle plugin for retrieving/handling application statistics'
+    tags = ['android', 'analytics', 'google-play']
+
+    plugins {
+        androidAnalytics {
+            id = 'com.github.rchugunov.android-analytics'
+            displayName = 'Gradle plugin for retrieving/handling application statistics'
+        }
+    }
 }
