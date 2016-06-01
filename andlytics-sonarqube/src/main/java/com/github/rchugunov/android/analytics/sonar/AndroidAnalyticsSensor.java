@@ -35,8 +35,8 @@ public class AndroidAnalyticsSensor implements Sensor {
     }
 
     /**
-     * Analyses project directory in search for IDE metadata configuration files
-     * and extracts relevant information.
+     * Analyses android.analytics/reviews.json
+     * and extracts ratings From Google Play.
      *
      * @param module  the project being analysed
      * @param context the sensor context

@@ -9,14 +9,14 @@ import java.util.List;
 
 public class AndroidAnalyticsMetrics implements Metrics {
     /**
-     * The project name (as configured in the IDE).
+     * Google play rating
      */
     public static final Metric GOOGLE_PLAY_RATING =
             new Metric.Builder(
                     "google_play_rating",
-                    "Project name in IDE",
+                    "Google play rating",
                     Metric.ValueType.INT)
-                    .setDescription("The project name (as configured in the IDE)")
+                    .setDescription("Daily app rating in Google Play")
                     .setQualitative(false)
                     .setDomain(CoreMetrics.DOMAIN_GENERAL)
                     .create();
