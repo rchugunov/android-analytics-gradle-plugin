@@ -67,9 +67,19 @@ public class AndroidAnalyticsSensor implements Sensor {
             return;
         }
         double rating = 0;
-
+        int actualReviewsCount = 0;
         for (Review review : reviews) {
-            rating = review.getComments().get(0).getUserComment().getStarRating();
+            Review.Comment.UserComment comment = review.getComments().get(0).getUserComment();
+            long ts = comment.getLastModified().getSeconds();
+            if (ts < System.currentTimeMillis() / 1000 - 24 * 3600) {
+                continue;
+            }
+            actualReviewsCount++;
+            rating += comment.getStarRating();
+        }
+
+        if (rating > 0) {
+            rating /= actualReviewsCount;
         }
 
         Measure measure = new Measure(AndroidAnalyticsMetrics.GOOGLE_PLAY_RATING, rating);
