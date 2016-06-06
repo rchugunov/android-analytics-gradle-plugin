@@ -3,7 +3,9 @@ jdk: oraclejdk8
 
 android:
   components:
-    - build-tools-23.0.1
+    - tools
+    - build-tools-23.0.3
     - android-23
+    - extra-android-m2repository
 
 script: ./gradlew -PBINTRAY_USER="" -PBINTRAY_KEY="" build
