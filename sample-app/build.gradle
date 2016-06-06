@@ -68,8 +68,15 @@ androidAnalytics {
     // GoogleServiceAccountCredentials.json in your project directory
     googleServiceAccountJson file({
         Properties properties = new Properties()
-        properties.load(project.rootProject.file('local.properties').newDataInputStream())
-        properties.getProperty('google-play-service-account-json')
+
+        File local = project.rootProject.file('local.properties');
+        if (local.exists()) {
+            properties.load(local.newDataInputStream())
+            properties.getProperty('google-play-service-account-json')
+        } else {
+            ""
+        }
+
     })
 }
 
