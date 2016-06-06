@@ -55,12 +55,17 @@ dependencies {
 }
 
 androidAnalytics {
-    applicationId = {
-        Properties properties = new Properties()
-        properties.load(project.rootProject.file('local.properties').newDataInputStream())
-        properties.getProperty('applicationId')
-    }.call()
 
+    // SPECIFY ApplcationId IF IT IS DIFFERENT FROM ONE IN android.defaultConfig
+//    applicationId = {
+//        Properties properties = new Properties()
+//        properties.load(project.rootProject.file('local.properties').newDataInputStream())
+//        properties.getProperty('applicationId')
+//    }.call()
+
+    // CHANGE CODE HERE TO SPECIFY PATH TO GoogleServiceAccountCredentials.json
+    // Create local.properties and specify path here. Don't commit local.properties and never keep
+    // GoogleServiceAccountCredentials.json in your project directory
     googleServiceAccountJson file({
         Properties properties = new Properties()
         properties.load(project.rootProject.file('local.properties').newDataInputStream())
