@@ -2,8 +2,6 @@
 
 [![Build Status](https://travis-ci.org/rchugunov/android-analytics-gradle-plugin.svg?branch=master)](https://travis-ci.org/rchugunov/android-analytics-gradle-plugin)
 
-[ ![Codeship Status for rchugunov/android-analytics-gradle-plugin](https://codeship.com/projects/a6d1d8c0-0e3b-0134-d392-663a1105f325/status?branch=master)](https://codeship.com/projects/156325)
-
 ##Documentation in progress
 
 If you contribute to this plugin you can deploy it fast
