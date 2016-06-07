@@ -1,6 +1,6 @@
 # Android analytics Gradle Plugin + SonarQube plugin (Measuring Google Play rating)
 
-[![Build Status](https://travis-ci.org/rchugunov/android-analytics-gradle-plugin.svg?branch=master)](https://travis-ci.org/rchugunov/android-analytics-gradle-plugin)
+[![Build Status](https://travis-ci.org/rchugunov/android-analytics-gradle-plugin.svg?branch=master)](https://travis-ci.org/rchugunov/android-analytics-gradle-plugin) [![Code Climate](https://codeclimate.com/github/rchugunov/android-analytics-gradle-plugin/badges/gpa.svg)](https://codeclimate.com/github/rchugunov/android-analytics-gradle-plugin) [![Issue Count](https://codeclimate.com/github/rchugunov/android-analytics-gradle-plugin/badges/issue_count.svg)](https://codeclimate.com/github/rchugunov/android-analytics-gradle-plugin) [![Test Coverage](https://codeclimate.com/github/rchugunov/android-analytics-gradle-plugin/badges/coverage.svg)](https://codeclimate.com/github/rchugunov/android-analytics-gradle-plugin/coverage)
 
 ##Documentation in progress
 
