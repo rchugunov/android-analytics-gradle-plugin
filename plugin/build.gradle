@@ -27,6 +27,7 @@ dependencies {
     compile 'com.squareup.retrofit2:retrofit:2.0.2'
     compile 'com.squareup.retrofit2:converter-gson:2.0.2'
     compile 'com.android.tools.build:gradle:2.2.0-alpha2'
+    compile 'com.google.code.gson:gson:2.4'
 }
 
 bintray {
