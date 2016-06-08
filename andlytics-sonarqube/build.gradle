@@ -4,7 +4,7 @@ plugins {
 
 group = 'com.github.rchugunov.android-analytics'
 description = 'Sonarqube plugin for retrieving/handling application statistics'
-version '0.1.0'
+version '0.1.1'
 
 apply plugin: 'java'
 apply plugin: 'java-gradle-plugin'
