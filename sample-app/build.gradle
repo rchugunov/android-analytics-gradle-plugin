@@ -7,7 +7,7 @@ buildscript {
         }
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.2.0-alpha2'
+        classpath 'com.android.tools.build:gradle:2.2.0-alpha3'
         classpath "org.sonarqube.gradle:gradle-sonarqube-plugin:1.1"
         classpath "com.gradle.publish:plugin-publish-plugin:0.9.4"
     }
@@ -70,14 +70,22 @@ androidAnalytics {
     // Create local.properties and specify path here. Don't commit local.properties and never keep
     // GoogleServiceAccountCredentials.json in your project directory
     googleServiceAccountJson file({
+        try {
+            return "$googleplay_serviceaccount_json";
+        } catch (Exception ignored) {
+        }
         Properties properties = new Properties()
 
         File local = project.rootProject.file('local.properties');
         if (local.exists()) {
             properties.load(local.newDataInputStream())
-            properties.getProperty('google-play-service-account-json')
+            if (properties.contains('googleplay_serviceaccount_json')) {
+                properties.getProperty('googleplay_serviceaccount_json')
+            } else {
+                "./build.gradle"
+            }
         } else {
-            ""
+            "./build.gradle"
         }
 
     })
