@@ -13,6 +13,8 @@ public class AndroidAnalyticsPlugin implements Plugin<Project> {
         project.getExtensions().create(ANDROID_ANALYTICS, AndroidAnalyticsExtension)
 
         createTask(project)
+
+        project.subprojects.each { project1 -> createTask(project1) }
     }
 
     private AndroidAnalyticsTask createTask(final Project project) {

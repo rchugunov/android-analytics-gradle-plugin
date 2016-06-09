@@ -18,7 +18,7 @@ buildscript {
     }
     dependencies {
         ...
-        classpath 'com.github.rchugunov.android-analytics:plugin:0.1.1'
+        classpath 'com.github.rchugunov.android-analytics:plugin:0.1.5'
     }
 }
 
@@ -29,7 +29,7 @@ For general use just add this lines to your project's build.gradle
 
 ``` groovy
 plugins {
-    id "com.github.rchugunov.android-analytics" version "0.1.1"
+    id "com.github.rchugunov.android-analytics" version "0.1.5"
 }
 ```
 

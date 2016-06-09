@@ -4,7 +4,7 @@ plugins {
 
 group = 'com.github.rchugunov.android-analytics'
 description = 'Sonarqube plugin for retrieving/handling application statistics'
-version '0.1.1'
+version '0.1.5'
 
 apply plugin: 'java'
 apply plugin: 'java-gradle-plugin'
@@ -31,7 +31,7 @@ dependencies {
     compile 'org.slf4j:slf4j-api:1.7.5'
     compile 'org.slf4j:slf4j-log4j12:1.7.5'
     compile 'log4j:log4j:1.2.16'
-    compile 'com.google.code.gson:gson:2.6.2'
+    compile 'com.google.code.gson:gson:2.4'
     // http://mvnrepository.com/artifact/org.sonarsource.sonarqube/sonar-plugin-api
 //    provided group: 'org.sonarsource.sonarqube', name: 'sonar-plugin-api', version: '5.5'
 

@@ -14,7 +14,7 @@ buildscript {
 }
 
 plugins {
-    id "com.github.rchugunov.android-analytics" version "0.1.0"
+    id "com.github.rchugunov.android-analytics" version "0.1.5"
 }
 
 repositories {
