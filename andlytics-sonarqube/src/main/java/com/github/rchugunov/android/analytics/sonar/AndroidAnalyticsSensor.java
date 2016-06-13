@@ -75,6 +75,7 @@ public class AndroidAnalyticsSensor implements Sensor {
                 continue;
             }
             actualReviewsCount++;
+            log.info(review.getAuthorName() + " rating " + comment.getStarRating());
             rating += comment.getStarRating();
         }
 
@@ -82,6 +83,7 @@ public class AndroidAnalyticsSensor implements Sensor {
             rating /= actualReviewsCount;
         }
 
+        log.info("Final rating " + rating);
         Measure measure = new Measure(AndroidAnalyticsMetrics.GOOGLE_PLAY_RATING, rating);
         sensorContext.saveMeasure(measure);
     }
