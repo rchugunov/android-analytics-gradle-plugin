@@ -14,7 +14,12 @@ import org.sonar.api.resources.Project;
 
 import java.io.File;
 import java.io.FileReader;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class AndroidAnalyticsSensor implements Sensor {
 
@@ -68,6 +73,7 @@ public class AndroidAnalyticsSensor implements Sensor {
         }
         double rating = 0;
         int actualReviewsCount = 0;
+        ArrayList<Map<String, String>> comments = new ArrayList<>();
         for (Review review : reviews) {
             Review.Comment.UserComment comment = review.getComments().get(0).getUserComment();
             long ts = comment.getLastModified().getSeconds();
@@ -76,6 +82,12 @@ public class AndroidAnalyticsSensor implements Sensor {
             }
             actualReviewsCount++;
             log.info(review.getAuthorName() + " rating " + comment.getStarRating());
+            Map<String, String> commentData = new HashMap<>();
+            commentData.put("author", review.getAuthorName());
+            commentData.put("time", new SimpleDateFormat("dd-MM-yyyy").format(new Date(comment.getLastModified().getSeconds())));
+            commentData.put("comment", comment.getText());
+            commentData.put("rating", "" + comment.getStarRating());
+            comments.add(commentData);
             rating += comment.getStarRating();
         }
 
@@ -84,7 +96,7 @@ public class AndroidAnalyticsSensor implements Sensor {
         }
 
         log.info("Final rating " + rating);
-        Measure measure = new Measure(AndroidAnalyticsMetrics.GOOGLE_PLAY_RATING, rating);
+        Measure measure = new Measure(AndroidAnalyticsMetrics.GOOGLE_PLAY_RATING, rating, new Gson().toJson(comments));
         sensorContext.saveMeasure(measure);
     }
 
